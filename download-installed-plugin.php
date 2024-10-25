@@ -18,6 +18,12 @@ if (!defined('ABSPATH')) {
 	exit("You can't access file directly");
 }
 
+//define constants
+define('DOWNLOAD_INSTALLED_PLUGIN_VERSION', time());
+define('DOWNLOAD_INSTALLED_PLUGIN_FILE', __FILE__);
+define('DOWNLOAD_INSTALLED_PLUGIN_DIR', __DIR__);
+define('DOWNLOAD_INSTALLED_PLUGIN_URL', plugin_dir_url(__FILE__));
+
 //load the plugin
 require_once __DIR__ . '/vendor/autoload.php';
 
