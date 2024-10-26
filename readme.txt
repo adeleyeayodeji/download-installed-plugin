@@ -1,4 +1,4 @@
-=== Download Installed Plugin ===
+=== Download Installed Extension ===
 Contributors: biggidroid
 Donate link: https://biggidroid.com/
 Tags: download, installed, plugin

@@ -7,15 +7,15 @@
  * @since   1.0.0
  *
  * @author  Biggidroid (https://www.biggidroid.com)
- * @package Download_Installed_Plugin
+ * @package Download_Installed_Extension
  *
  * @copyright (c) 2024, Biggidroid (https://www.biggidroid.com)
  */
 
-namespace Download_Installed_Plugin;
+namespace Download_Installed_Extension;
 
-use Download_Installed_Plugin\Admin\Admin_Core;
-use Download_Installed_Plugin\Base;
+use Download_Installed_Extension\Admin\Admin_Core;
+use Download_Installed_Extension\Base;
 
 // If this file is called directly, abort.
 defined('WPINC') || die;

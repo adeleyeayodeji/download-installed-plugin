@@ -2,13 +2,13 @@ import blockUI from "block-ui";
 /**
  * Download Installed Plugin Script
  *
- * @package Download Installed Plugin
+ * @package Download Installed Extension
  */
 jQuery(document).ready(function ($) {
 	/**
 	 * Listen for click events on the download button
 	 */
-	$(".download-installed-plugin").each(function () {
+	$(".download-installed-extension").each(function () {
 		/**
 		 * Handle click event
 		 */
@@ -25,8 +25,8 @@ jQuery(document).ready(function ($) {
 				url: downloadinstalledplugin.ajax_url,
 				type: "POST",
 				data: {
-					action: "ade_download_installed_plugin",
-					nonce: downloadinstalledplugin.nonce,
+					action: "ade_download_installed_extension",
+					nonce: downloadinstalledextension.nonce,
 					plugin_file: pluginFile,
 				},
 				beforeSend: () => {

@@ -3,17 +3,17 @@
 /**
  * Admin Core
  *
- * @package Download Installed Plugin
+ * @package Download Installed Extension
  */
 
-namespace Download_Installed_Plugin\Admin;
+namespace Download_Installed_Extension\Admin;
 
-use Download_Installed_Plugin\Base;
+use Download_Installed_Extension\Base;
 
 /**
  * Class Admin_Core
  *
- * @package Download_Installed_Plugin\Admin
+ * @package Download_Installed_Extension\Admin
  */
 class Admin_Core extends Base
 {
@@ -30,7 +30,7 @@ class Admin_Core extends Base
 		//add script to plugins page
 		add_action('admin_enqueue_scripts', array($this, 'enqueue_scripts'));
 		//add ajax action
-		add_action('wp_ajax_ade_download_installed_plugin', array($this, 'validate_installed_plugin'));
+		add_action('wp_ajax_ade_download_installed_extension', array($this, 'validate_installed_plugin'));
 		//api route
 		add_action('rest_api_init', array($this, 'api_routes'));
 	}
@@ -42,10 +42,10 @@ class Admin_Core extends Base
 	 */
 	public function api_routes()
 	{
-		register_rest_route('ade-download-installed-plugin/v1', '/download-plugin', array(
+		register_rest_route('ade-download-installed-extension/v1', '/download-extension', array(
 			'methods' => 'GET',
-			'callback' => array($this, 'download_installed_plugin_as_zip'),
-			'permission_callback' => array($this, 'download_installed_plugin_permission'),
+			'callback' => array($this, 'download_installed_extension_as_zip'),
+			'permission_callback' => array($this, 'download_installed_extension_permission'),
 		));
 	}
 
@@ -57,7 +57,7 @@ class Admin_Core extends Base
 	 */
 	public function get_download_link($plugin_file)
 	{
-		return rest_url('ade-download-installed-plugin/v1/download-plugin?plugin_file=' . $plugin_file);
+		return rest_url('ade-download-installed-extension/v1/download-extension?plugin_file=' . $plugin_file);
 	}
 
 	/**
@@ -65,7 +65,7 @@ class Admin_Core extends Base
 	 *
 	 * @return bool
 	 */
-	public function download_installed_plugin_permission()
+	public function download_installed_extension_permission()
 	{
 		//return true for now
 		return true;
@@ -77,7 +77,7 @@ class Admin_Core extends Base
 	 * @param \WP_REST_Request $request
 	 * @return \WP_REST_Response
 	 */
-	public function download_installed_plugin_as_zip(\WP_REST_Request $request)
+	public function download_installed_extension_as_zip(\WP_REST_Request $request)
 	{
 		try {
 			//get the plugin file
@@ -91,11 +91,11 @@ class Admin_Core extends Base
 				session_start();
 			}
 			//validate the plugin file nonce
-			if (!isset($_SESSION['ade_download_installed_plugin']['plugin_file_nonce']) || $_SESSION['ade_download_installed_plugin']['plugin_file_nonce'] !== md5($plugin_file)) {
+			if (!isset($_SESSION['ade_download_installed_extension']['plugin_file_nonce']) || $_SESSION['ade_download_installed_extension']['plugin_file_nonce'] !== md5($plugin_file)) {
 				throw new \Exception('Invalid plugin file nonce, please try again.');
 			}
 			//download the plugin
-			$this->download_plugin_file($plugin_file);
+			$this->download_extension_file($plugin_file);
 			return rest_ensure_response(array('message' => 'Plugin file downloaded successfully.'));
 		} catch (\Exception $e) {
 			//log the error
@@ -111,15 +111,14 @@ class Admin_Core extends Base
 	 * @param string $plugin_file
 	 * @return void
 	 */
-	public function download_plugin_file($plugin_file)
+	public function download_extension_file($plugin_file)
 	{
 		// Get the plugin directory path
 		$plugin_dir_path = WP_PLUGIN_DIR . '/' . dirname($plugin_file);
 
-		// Create a temporary zip file
-		$zip_file = explode('/', $plugin_file);
-		//get the last element of the array
-		$zip_file = $zip_file[count($zip_file) - 1] . '.zip';
+		// Create a temporary zip file in the system's temp directory
+		$temp_dir = sys_get_temp_dir();
+		$zip_file = tempnam($temp_dir, 'plugin_') . '.zip';
 
 		// Initialize the ZipArchive class
 		$zip = new \ZipArchive();
@@ -129,19 +128,39 @@ class Admin_Core extends Base
 
 		// Add files to the zip archive
 		$files = new \RecursiveIteratorIterator(
-			new \RecursiveDirectoryIterator($plugin_dir_path),
+			new \RecursiveDirectoryIterator($plugin_dir_path, \RecursiveDirectoryIterator::SKIP_DOTS),
 			\RecursiveIteratorIterator::LEAVES_ONLY
 		);
 
-		foreach ($files as $name => $file) {
-			// Skip directories (they would be added automatically)
-			if (!$file->isDir()) {
-				// Get real and relative path for current file
-				$filePath = $file->getRealPath();
-				$relativePath = substr($filePath, strlen($plugin_dir_path) + 1);
+		// Ignore directories and files
+		$ignore_directories = array('node_modules', 'tests', 'bin');
+		$ignore_files = array(
+			'Gruntfile.js',
+			'package-lock.json',
+			'composer.lock',
+			'webpack.config.js',
+			'phpunit.xml',
+			'phpcs.xml',
+			'phpcs.xml.dist',
+			'editorconfig',
+			'eslintrc.js',
+			'eslintignore',
+			'.gitignore',
+			'.distignore'
+		);
 
-				// Add current file to archive
-				$zip->addFile($filePath, $relativePath);
+		foreach ($files as $file) {
+			// Skip directories and ignored files
+			if (!$file->isDir()) {
+				//get the relative path
+				$relativePath = substr($file->getRealPath(), strlen($plugin_dir_path) + 1);
+				//explode the relative path
+				$pathParts = explode(DIRECTORY_SEPARATOR, $relativePath);
+				//check if the first part of the path is in the ignore directories array and the file is not in the ignore files array
+				if (!in_array($pathParts[0], $ignore_directories) && !in_array(basename($file), $ignore_files)) {
+					// Add current file to archive
+					$zip->addFile($file->getRealPath(), $relativePath);
+				}
 			}
 		}
 
@@ -156,20 +175,20 @@ class Admin_Core extends Base
 
 		// Delete the temporary zip file
 		unlink($zip_file);
-		//exit the script
+		// Exit the script
 		exit;
 	}
 
 	/**
-	 * Validate installed plugin
+	 * Validate installed extension
 	 *
 	 * @return void
 	 */
-	public function validate_installed_plugin()
+	public function validate_installed_extension()
 	{
 		try {
 			//verify nonce
-			if (!wp_verify_nonce($_POST['nonce'], 'download_installed_plugin_nonce')) {
+			if (!wp_verify_nonce($_POST['nonce'], 'download_installed_extension_nonce')) {
 				throw new \Exception('Invalid nonce, please try again.');
 			}
 			//get the plugin file
@@ -183,7 +202,7 @@ class Admin_Core extends Base
 				session_start();
 			}
 			//save the plugin file to the session
-			$_SESSION['ade_download_installed_plugin'] = array(
+			$_SESSION['ade_download_installed_extension'] = array(
 				'plugin_file_nonce' => md5($plugin_file),
 			);
 			//return success
@@ -233,13 +252,13 @@ class Admin_Core extends Base
 	 */
 	public function enqueue_scripts()
 	{
-		wp_enqueue_script('downloadinstalledplugin', DOWNLOAD_INSTALLED_PLUGIN_URL . 'assets/js/downloadinstalledplugin.min.js', array('jquery'), DOWNLOAD_INSTALLED_PLUGIN_VERSION, true);
+		wp_enqueue_script('downloadinstalledextension', DOWNLOAD_INSTALLED_EXTENSION_URL . 'assets/js/downloadinstalledextension.min.js', array('jquery'), DOWNLOAD_INSTALLED_EXTENSION_VERSION, true);
 		wp_localize_script(
-			'downloadinstalledplugin',
-			'downloadinstalledplugin',
+			'downloadinstalledextension',
+			'downloadinstalledextension',
 			array(
 				'ajax_url' => admin_url('admin-ajax.php'),
-				'nonce' => wp_create_nonce('download_installed_plugin_nonce'),
+				'nonce' => wp_create_nonce('download_installed_extension_nonce'),
 			)
 		);
 	}

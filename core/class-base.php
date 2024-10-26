@@ -8,14 +8,14 @@
  * @since   1.0.0
  *
  * @author  Biggidroid (https://www.biggidroid.com)
- * @package Download_Installed_Plugin
+ * @package Download_Installed_Extension
  *
  * @copyright (c) 2024, Biggidroid (https://www.biggidroid.com)
  */
 
-namespace Download_Installed_Plugin;
+namespace Download_Installed_Extension;
 
-use Download_Installed_Plugin\Singleton;
+use Download_Installed_Extension\Singleton;
 
 // Abort if called directly.
 defined('WPINC') || die;
@@ -23,7 +23,7 @@ defined('WPINC') || die;
 /**
  * Class Base
  *
- * @package Download_Installed_Plugin
+ * @package Download_Installed_Extension
  */
 abstract class Base extends Singleton
 {

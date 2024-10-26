@@ -7,7 +7,7 @@
  * @since   1.0.0
  *
  * @author  Biggidroid (https://www.biggidroid.com)
- * @package download-installed-plugin
+ * @package download-installed-extension
  *
  * @copyright (c) 2024, Biggidroid (https://www.biggidroid.com)
  */

@@ -7,7 +7,7 @@ module.exports = function (grunt) {
 
 		addtextdomain: {
 			options: {
-				textdomain: "download-installed-plugin",
+				textdomain: "download-installed-extension",
 			},
 			update_all_domains: {
 				options: {
@@ -35,7 +35,7 @@ module.exports = function (grunt) {
 		compress: {
 			main: {
 				options: {
-					archive: "archive/download-installed-plugin.zip",
+					archive: "archive/download-installed-extension.zip",
 				},
 				files: [
 					{
@@ -44,7 +44,7 @@ module.exports = function (grunt) {
 							"assets/**",
 							"core/**",
 							"vendor/**",
-							"download-installed-plugin.php",
+							"download-installed-extension.php",
 							"README.md",
 							"composer.json",
 						],
@@ -52,7 +52,7 @@ module.exports = function (grunt) {
 						filter: function (filepath) {
 							// Ignore .logs, .gitignore, .map files, and .css files in assets/js
 							return !filepath.match(
-								/\.logs$|\.gitignore$|\.map$|assets\/js\/.*\.css$/
+								/\.logs$|\.gitignore$|\.map$|assets\/js\/.*\.css$/,
 							);
 						},
 					},
@@ -84,9 +84,9 @@ module.exports = function (grunt) {
 						grunt.log.writeln(stdout);
 						done();
 					}
-				}
+				},
 			);
-		}
+		},
 	);
 
 	// Register the delete_readme task
