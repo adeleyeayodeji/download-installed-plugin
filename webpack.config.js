@@ -7,7 +7,7 @@ const defaultConfig = require("@wordpress/scripts/config/webpack.config");
 module.exports = {
 	...defaultConfig,
 	entry: {
-		downloadinstalledplugin: "./src/main.jsx",
+		downloadinstalledextension: "./src/main.jsx",
 	},
 
 	output: {

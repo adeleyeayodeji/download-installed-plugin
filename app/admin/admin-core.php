@@ -30,7 +30,7 @@ class Admin_Core extends Base
 		//add script to plugins page
 		add_action('admin_enqueue_scripts', array($this, 'enqueue_scripts'));
 		//add ajax action
-		add_action('wp_ajax_ade_download_installed_extension', array($this, 'validate_installed_plugin'));
+		add_action('wp_ajax_ade_download_installed_extension', array($this, 'validate_installed_extension'));
 		//api route
 		add_action('rest_api_init', array($this, 'api_routes'));
 	}
@@ -133,20 +133,31 @@ class Admin_Core extends Base
 		);
 
 		// Ignore directories and files
-		$ignore_directories = array('node_modules', 'tests', 'bin');
+		$ignore_directories = array(
+			'node_modules', //node modules
+			'tests', //tests
+			'bin', //bin
+		);
+
+		/**
+		 * Ignore files
+		 *
+		 * @var array
+		 */
 		$ignore_files = array(
-			'Gruntfile.js',
-			'package-lock.json',
-			'composer.lock',
-			'webpack.config.js',
-			'phpunit.xml',
-			'phpcs.xml',
-			'phpcs.xml.dist',
-			'editorconfig',
-			'eslintrc.js',
-			'eslintignore',
-			'.gitignore',
-			'.distignore'
+			'Gruntfile.js', //Gruntfile
+			'package-lock.json', //package lock
+			'composer.lock', //composer lock
+			'webpack.config.js', //webpack config
+			'phpunit.xml', //phpunit
+			'phpcs.xml', //phpcs
+			'phpcs.xml.dist', //phpcs dist
+			'editorconfig', //editorconfig
+			'eslintrc.js', //eslintrc
+			'eslintignore', //eslintignore
+			'.gitignore', //gitignore
+			'.distignore', //distignore
+			'phpunit.xml.dist', //phpunit dist
 		);
 
 		foreach ($files as $file) {
@@ -227,7 +238,7 @@ class Admin_Core extends Base
 	 */
 	public function add_download_column($columns)
 	{
-		$columns['download-installed-plugin'] = __('Download');
+		$columns['download-installed-extension'] = __('Download');
 		return $columns;
 	}
 
@@ -240,8 +251,8 @@ class Admin_Core extends Base
 	 */
 	public function render_download_column($column_name, $plugin_file)
 	{
-		if ($column_name === 'download-installed-plugin') {
-			echo '<a href="javascript:void(0)" data-plugin-file="' . esc_attr($plugin_file) . '" class="download-installed-plugin">' . __('Download') . '</a>';
+		if ($column_name === 'download-installed-extension') {
+			echo '<a href="javascript:void(0)" data-plugin-file="' . esc_attr($plugin_file) . '" class="download-installed-extension">' . __('Download') . '</a>';
 		}
 	}
 
