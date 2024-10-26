@@ -1,6 +1,6 @@
 === Download Installed Extension ===
-Contributors: biggidroid
-Donate link: https://biggidroid.com/
+Contributors: biggidroid, adeleyeayodeji
+Donate link: https://www.adeleyeayodeji.com/
 Tags: download, installed, plugin
 Requires at least: 4.5
 Tested up to: 6.6.2

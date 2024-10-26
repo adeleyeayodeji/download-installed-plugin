@@ -4,11 +4,12 @@
  * Plugin Name:     Download Installed Extension
  * Plugin URI:      https://www.biggidroid.com/
  * Description:     This plugin allows you to download the currently installed plugin as a zip file.
- * Author:          Biggidroid
- * Author URI:      https://www.biggidroid.com/
+ * Author:          Adeleye Ayodeji
+ * Author URI:      https://www.adeleyeayodeji.com/
  * Text Domain:     download-installed-extension
- * Domain Path:     /languages
  * Version:         0.1.0
+ * License:         GPLv2 or later
+ * License URI:     https://www.gnu.org/licenses/gpl-2.0.html
  *
  * @package         Download_Installed_Extension
  */
