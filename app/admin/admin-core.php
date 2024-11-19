@@ -198,8 +198,12 @@ class Admin_Core extends Base
 	public function validate_installed_extension()
 	{
 		try {
+			//get and sanitize the nonce
+			$nonce = sanitize_text_field(
+				wp_unslash($_POST['nonce']) //remove slashes
+			);
 			//verify nonce
-			if (!wp_verify_nonce($_POST['nonce'], 'download_installed_extension_nonce')) {
+			if (!wp_verify_nonce($nonce, 'download_installed_extension_nonce')) {
 				throw new \Exception('Invalid nonce, please try again.');
 			}
 			//get the plugin file
@@ -238,7 +242,7 @@ class Admin_Core extends Base
 	 */
 	public function add_download_column($columns)
 	{
-		$columns['download-installed-extension'] = __('Download');
+		$columns['download-installed-extension'] = __('Download', 'download-installed-extension');
 		return $columns;
 	}
 
@@ -252,7 +256,7 @@ class Admin_Core extends Base
 	public function render_download_column($column_name, $plugin_file)
 	{
 		if ($column_name === 'download-installed-extension') {
-			echo '<a href="javascript:void(0)" data-plugin-file="' . esc_attr($plugin_file) . '" class="download-installed-extension">' . __('Download') . '</a>';
+			echo '<a href="javascript:void(0)" data-plugin-file="' . esc_attr($plugin_file) . '" class="download-installed-extension">' . __('Download', 'download-installed-extension') . '</a>';
 		}
 	}
 
