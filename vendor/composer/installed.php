@@ -3,7 +3,7 @@
         'name' => 'download-installed-extension/download-installed-extension',
         'pretty_version' => 'dev-main',
         'version' => 'dev-main',
-        'reference' => '077d5fc6c1633fc0f3ed21e20a7c48a39ef4a8ec',
+        'reference' => '305cf73c8487d4f186b5a30125eb12f845d0e291',
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -13,7 +13,7 @@
         'download-installed-extension/download-installed-extension' => array(
             'pretty_version' => 'dev-main',
             'version' => 'dev-main',
-            'reference' => '077d5fc6c1633fc0f3ed21e20a7c48a39ef4a8ec',
+            'reference' => '305cf73c8487d4f186b5a30125eb12f845d0e291',
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),

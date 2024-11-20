@@ -3,7 +3,7 @@ Contributors: biggidroid, adeleyeayodeji
 Donate link: https://www.adeleyeayodeji.com/
 Tags: download, installed, plugin
 Requires at least: 4.5
-Tested up to: 6.6.2
+Tested up to: 6.7
 Requires PHP: 5.6
 Stable tag: 0.1.0
 License: GPLv2 or later
