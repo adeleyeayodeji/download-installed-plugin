@@ -35,3 +35,8 @@ Click the "Download" button on the plugin's page in the WordPress admin.
 
 = 1.0 =
 * Initial release.
+
+== Resources ==
+
+This plugin uses the jQuery library. For more information, visit [jQuery's official website](https://jquery.com/).
+This plugin uses the blockUI library. For more information, visit [blockUI's official website](https://malsup.com/jquery/block/).
