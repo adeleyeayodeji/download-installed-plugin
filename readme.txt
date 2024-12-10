@@ -1,7 +1,7 @@
 === Download Installed Extension ===
-Contributors: biggidroid, adeleyeayodeji
+Contributors: biggidroid
 Donate link: https://www.adeleyeayodeji.com/
-Tags: download, installed, plugin
+Tags: download, installed, backup, zip, clone
 Requires at least: 4.5
 Tested up to: 6.7
 Requires PHP: 5.6
@@ -14,6 +14,12 @@ This plugin allows you to download the currently installed plugin as a zip file.
 == Description ==
 
 This plugin allows you to download the currently installed plugin as a zip file.
+
+== Features ==
+
+* Download the currently installed plugin as a zip file.
+* Download the currently installed theme as a zip file.
+* Download the currently installed plugin and theme as a zip file.
 
 == Installation ==
 
