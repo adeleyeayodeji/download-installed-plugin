@@ -1,9 +1,9 @@
 <?php
 
 /**
- * Plugin Name:     Download Installed Extension
+ * Plugin Name:     BiggiDroid Backup and Restore
  * Plugin URI:      https://www.biggidroid.com/
- * Description:     This plugin allows you to download the currently installed plugin as a zip file.
+ * Description:     Easily back up and and restore your wordpress site easily along with downloading plugins and themes as zip files.
  * Author:          Adeleye Ayodeji
  * Author URI:      https://www.adeleyeayodeji.com/
  * Text Domain:     download-installed-extension
