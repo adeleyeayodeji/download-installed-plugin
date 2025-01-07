@@ -33,6 +33,36 @@ class Admin_Core extends Base
 		add_action('wp_ajax_ade_download_installed_extension', array($this, 'validate_installed_extension'));
 		//api route
 		add_action('rest_api_init', array($this, 'api_routes'));
+		//add admin menu
+		add_action('admin_menu', array($this, 'add_admin_menu'));
+	}
+
+	/**
+	 * Add admin menu
+	 *
+	 * @return void
+	 */
+	public function add_admin_menu()
+	{
+		add_menu_page(
+			'BiggiDroid Backup & Restore',
+			'BiggiDroid Backup & Restore',
+			'manage_options',
+			'biggidroid-backup-restore',
+			array($this, 'admin_page'),
+			'dashicons-backup',
+			20
+		);
+	}
+
+	/**
+	 * Admin page
+	 *
+	 * @return void
+	 */
+	public function admin_page()
+	{
+		echo "<div id='biggidroid-backup-restore'><span>Loading...</span></div>";
 	}
 
 	/**
@@ -267,7 +297,18 @@ class Admin_Core extends Base
 	 */
 	public function enqueue_scripts()
 	{
-		wp_enqueue_script('downloadinstalledextension', DOWNLOAD_INSTALLED_EXTENSION_URL . 'assets/js/downloadinstalledextension.min.js', array('jquery'), DOWNLOAD_INSTALLED_EXTENSION_VERSION, true);
+		//enqueue styles
+		wp_enqueue_style('downloadinstalledextension', DOWNLOAD_INSTALLED_EXTENSION_URL . 'assets/css/downloadinstalledextension.css', array(), DOWNLOAD_INSTALLED_EXTENSION_VERSION, 'all');
+		//enqueue scripts
+		wp_enqueue_script('downloadinstalledextension', DOWNLOAD_INSTALLED_EXTENSION_URL . 'assets/js/downloadinstalledextension.min.js', array(
+			'wp-element', //wordpress element
+			'wp-editor', //wordpress editor
+			'wp-i18n', //wordpress i18n
+			'wp-blocks', //wordpress blocks
+			'wp-components', //wordpress components
+			'jquery', //jquery
+		), DOWNLOAD_INSTALLED_EXTENSION_VERSION, true);
+		//localize scripts
 		wp_localize_script(
 			'downloadinstalledextension',
 			'downloadinstalledextension',
