@@ -10,6 +10,11 @@ namespace Download_Installed_Extension\Admin;
 
 use Download_Installed_Extension\Base;
 
+//check for security
+if (!defined('ABSPATH')) {
+	exit("You are not allowed to access this file.");
+}
+
 /**
  * Class Admin_Core
  *
@@ -35,6 +40,8 @@ class Admin_Core extends Base
 		add_action('rest_api_init', array($this, 'api_routes'));
 		//add admin menu
 		add_action('admin_menu', array($this, 'add_admin_menu'));
+		//add ajax action
+		add_action('wp_ajax_biggidroid_backup_wordpress_site', array($this, 'backup_wordpress_site'));
 	}
 
 	/**
@@ -291,6 +298,24 @@ class Admin_Core extends Base
 	}
 
 	/**
+	 * Backup wordpress site
+	 *
+	 * @return void
+	 */
+	public function backup_wordpress_site()
+	{
+		try {
+			//return success
+			wp_send_json_success(array('message' => 'Backup completed successfully.'));
+		} catch (\Exception $e) {
+			//log the error
+			error_log("Backup Wordpress Site Error: " . $e->getMessage());
+			//return error
+			wp_send_json_error(array('message' => $e->getMessage()));
+		}
+	}
+
+	/**
 	 * Enqueue scripts
 	 *
 	 * @return void
@@ -298,7 +323,7 @@ class Admin_Core extends Base
 	public function enqueue_scripts()
 	{
 		//enqueue styles
-		wp_enqueue_style('downloadinstalledextension', DOWNLOAD_INSTALLED_EXTENSION_URL . 'assets/css/downloadinstalledextension.css', array(), DOWNLOAD_INSTALLED_EXTENSION_VERSION, 'all');
+		wp_enqueue_style('downloadinstalledextension', DOWNLOAD_INSTALLED_EXTENSION_URL . 'assets/css/downloadinstalledextension.min.css', array(), DOWNLOAD_INSTALLED_EXTENSION_VERSION, 'all');
 		//enqueue scripts
 		wp_enqueue_script('downloadinstalledextension', DOWNLOAD_INSTALLED_EXTENSION_URL . 'assets/js/downloadinstalledextension.min.js', array(
 			'wp-element', //wordpress element

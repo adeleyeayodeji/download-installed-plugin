@@ -15,6 +15,7 @@
 namespace Download_Installed_Extension;
 
 use Download_Installed_Extension\Admin\Admin_Core;
+use Download_Installed_Extension\Admin\BackupCore;
 use Download_Installed_Extension\Base;
 
 // If this file is called directly, abort.
@@ -100,7 +101,9 @@ final class Loader extends Base
 	 */
 	private function init()
 	{
-		//init migration
+		//init admin core
 		Admin_Core::instance()->init();
+		//init backup core
+		BackupCore::instance()->init();
 	}
 }

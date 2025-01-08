@@ -8,6 +8,7 @@ $baseDir = dirname($vendorDir);
 return array(
     'Composer\\InstalledVersions' => $vendorDir . '/composer/InstalledVersions.php',
     'Download_Installed_Extension\\Admin\\Admin_Core' => $baseDir . '/app/admin/admin-core.php',
+    'Download_Installed_Extension\\Admin\\BackupCore' => $baseDir . '/app/admin/backup-core.php',
     'Download_Installed_Extension\\Base' => $baseDir . '/core/class-base.php',
     'Download_Installed_Extension\\Loader' => $baseDir . '/core/class-loader.php',
     'Download_Installed_Extension\\Singleton' => $baseDir . '/core/class-singleton.php',

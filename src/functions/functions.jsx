@@ -5,7 +5,6 @@ import blockUI from "block-ui";
  * @package Download Installed Extension
  */
 jQuery(document).ready(function ($) {
-	console.log("Download Installed Extension Script Loaded");
 	/**
 	 * Listen for click events on the download button
 	 */
