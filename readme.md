@@ -9,23 +9,27 @@ Stable tag: 0.1.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-BiggiDroid Backup and Restore allows you to easily back up and download plugins and themes as zip files directly from your WordPress dashboard.
+BiggiDroid Backup and Restore for WordPress allows you to easily back up and and restore your wordpress site easily along with downloading plugins and themes as zip files.
 
 == Description ==
 
-BiggiDroid Backup and Restore is the ultimate tool for WordPress administrators who want to quickly and securely back up their website components.
+BiggiDroid Backup and Restore is the ultimate tool for WordPress administrators who want to quickly and securely back up and restore their wordpress site easily along with downloading plugins and themes as zip files.
 
 With just a few clicks, you can:
 
 -   Download active plugins as zip files for safe storage or migration.
 -   Back up active themes to easily replicate your site's design.
 -   Bundle plugins and themes into zip files for complete backup solutions.
+-   Backup your wordpress site easily
+-   Restore your wordpress site easily
 
 == Features ==
 
 -   Download any currently installed plugin as a zip file.
 -   Back up active themes as zip files.
 -   Export plugins and themes together in a single backup file.
+-   Backup your wordpress site easily
+-   Restore your wordpress site easily
 
 == Installation ==
 
@@ -41,6 +45,15 @@ Navigate to the "BiggiDroid Backup" section in your WordPress dashboard, select 
 = Can I back up both plugins and themes simultaneously? =
 Yes! The plugin provides an option to download both in one zip file.
 
+= Can I download plugins and themes as zip files? =
+Yes! The plugin provides an option to download plugins and themes as zip files.
+
+= Can I back up my wordpress site? =
+Yes! The plugin provides an option to download your wordpress site as a zip file.
+
+= Can I restore my wordpress site? =
+Yes! The plugin provides an option to restore your wordpress site from a zip file.
+
 = Is the plugin compatible with multisite installations? =
 Currently, the plugin works on individual WordPress sites only. Support for multisite is planned for future updates.
 
@@ -48,7 +61,7 @@ Currently, the plugin works on individual WordPress sites only. Support for mult
 
 = 1.0.0 =
 
--   Initial release with support for plugin and theme backups.
+-   Initial release with support for site backup and restore.
 
 == Resources ==
 

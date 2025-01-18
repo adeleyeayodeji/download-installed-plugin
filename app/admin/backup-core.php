@@ -10,6 +10,8 @@
 namespace Download_Installed_Extension\Admin;
 
 use Download_Installed_Extension\Base;
+use RecursiveDirectoryIterator;
+use RecursiveIteratorIterator;
 
 /**
  * Backup core
@@ -84,23 +86,102 @@ class BackupCore extends Base
 				'priority' => 2,
 				'folder' => WP_CONTENT_DIR . '/themes',
 			],
-			// [
-			// 	/**
-			// 	 * Uploads
-			// 	 * Priority 3
-			// 	 */
-			// 	'priority' => 3,
-			// 	'folder' => WP_CONTENT_DIR . '/uploads',
-			// ],
-			// [
-			// 	/**
-			// 	 * Others
-			// 	 * Exclude less priority folders
-			// 	 */
-			// 	'priority' => 4,
-			// 	'folder' => 'others',
-			// ],
+			[
+				/**
+				 * Uploads
+				 * Priority 3
+				 */
+				'priority' => 3,
+				'folder' => WP_CONTENT_DIR . '/uploads',
+			]
 		];
+	}
+
+	/**
+	 * Root folders files backup
+	 *
+	 * @return void
+	 * @throws \Exception
+	 */
+	public function wp_root_folders_files_backup()
+	{
+		try {
+			$rootDir = ABSPATH; // WordPress root directory
+			$backupDir = $this->backup_folder;
+			// Backup folder name
+			$backup_folder_name = 'others-' . date('Y-m-d');
+			// Backup zip file
+			$backupZipFile = $backupDir . DIRECTORY_SEPARATOR . $backup_folder_name . '.zip';
+
+			// Validate directories
+			if (!is_writable($backupDir)) {
+				throw new \Exception("Backup directory is not writable: $backupDir");
+			}
+			if (!is_readable($rootDir)) {
+				throw new \Exception("Root directory is not readable: $rootDir");
+			}
+
+			// Check if zip file already exists
+			if (file_exists($backupZipFile)) {
+				// Skip the backup
+				return;
+			}
+
+			// Check if strpos for zip name already exists in the backup_folder
+			if (strpos($backup_folder_name, $this->backup_folder) !== false) {
+				// Skip the backup
+				return;
+			}
+
+			// Excluded directories
+			$excludedPaths = [
+				realpath($rootDir . 'wp-content/uploads'),
+				realpath($rootDir . 'wp-content/plugins'),
+				realpath($rootDir . 'wp-content/themes'),
+				realpath($rootDir . 'wp-content/ai1wm-backups'),
+				realpath($rootDir . 'wp-content/biggidroid-backups'),
+				realpath($rootDir . 'wp-content/cache'),
+				// realpath($rootDir . 'wp-content/something'),
+			];
+
+			// Initialize ZipArchive
+			$zip = new \ZipArchive();
+			if ($zip->open($backupZipFile, \ZipArchive::CREATE | \ZipArchive::OVERWRITE) !== true) {
+				throw new \Exception("Failed to create ZIP file at $backupZipFile");
+			}
+
+			// Traverse files and add to ZIP
+			$iterator = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($rootDir, RecursiveDirectoryIterator::SKIP_DOTS));
+
+			foreach ($iterator as $file) {
+				$filePath = $file->getRealPath();
+
+				// Skip excluded directories and their subdirectories
+				$excludeFile = false;
+				foreach ($excludedPaths as $excludedPath) {
+					if (strpos($filePath, $excludedPath) === 0) { // Check if the file path starts with an excluded path
+						$excludeFile = true;
+						break;
+					}
+				}
+
+				if ($excludeFile) {
+					continue;
+				}
+
+				// Add file to ZIP
+				$relativePath = str_replace($rootDir, '', $filePath);
+				$zip->addFile($filePath, $relativePath);
+			}
+
+			// Close the ZIP archive
+			$zip->close();
+		} catch (\Throwable $e) {
+			// Log error
+			error_log("Error creating ZIP backup: " . $e->getMessage());
+			// Throw error with details
+			throw new \Exception("Error creating ZIP backup: " . $e->getMessage());
+		}
 	}
 
 	/**
@@ -158,8 +239,22 @@ class BackupCore extends Base
 			$folder_name = basename($folder['folder']) . '-' . date('Y-m-d');
 
 			//check if zip file already exists
-			$zipFileName = $this->backup_folder . '/' . $folder_name . '.zip';
+			$zipFileName = $this->backup_folder . DIRECTORY_SEPARATOR . $folder_name . '.zip';
 			if (file_exists($zipFileName)) {
+				//skip the backup
+				return;
+			}
+
+			//check if matched exist in the backup_folder without the zip extension
+			$matched_zip_file = glob($this->backup_folder . DIRECTORY_SEPARATOR . $folder_name . '.*');
+			if ($matched_zip_file) {
+				//skip the backup
+				return;
+			}
+
+			//check if strpos for zip name already exists in the backup_folder
+			if (strpos($folder_name, $this->backup_folder) !== false) {
+				//skip the backup
 				return;
 			}
 
@@ -232,7 +327,8 @@ class BackupCore extends Base
 	{
 		try {
 			//init backup
-			$this->init_backup();
+			// $this->init_backup();
+			// $this->wp_root_folders_files_backup();
 		} catch (\Throwable $e) {
 			//log error
 			error_log("Error backing up wordpress: " . $e->getMessage());
