@@ -14,6 +14,7 @@ class ComposerStaticInitb30e505aaf9bfb366037403b489bc482
         'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
         'Download_Installed_Extension\\Admin\\Admin_Core' => __DIR__ . '/../..' . '/app/admin/admin-core.php',
         'Download_Installed_Extension\\Admin\\BackupCore' => __DIR__ . '/../..' . '/app/admin/backup-core.php',
+        'Download_Installed_Extension\\Admin\\BackupHandler' => __DIR__ . '/../..' . '/app/admin/backup-handler.php',
         'Download_Installed_Extension\\Base' => __DIR__ . '/../..' . '/core/class-base.php',
         'Download_Installed_Extension\\Loader' => __DIR__ . '/../..' . '/core/class-loader.php',
         'Download_Installed_Extension\\Singleton' => __DIR__ . '/../..' . '/core/class-singleton.php',
